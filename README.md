@@ -33,15 +33,15 @@
 ## 项目文件结构
 yijiangnan-class
 │
-├ index.html
-├ poem.html
-├ game.html
+├ index.html          微课开场动画页面
+├ poem.html           古诗学习页面
+├ game.html           互动小游戏页面
 │
 ├ video
-│   └ opening.mp4
+│   └ opening.mp4     微课开场动画视频
 │
-├ README.md
-└ LICENSE.txt
+├ README.md           项目说明
+└ LICENSE.txt         项目许可说明
 **index.html**
 
 微课开场页面，用于播放江南水乡动画，引入课堂情境。
