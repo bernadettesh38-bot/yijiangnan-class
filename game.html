@@ -1,0 +1,929 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>《忆江南》课堂闯关</title>
+  <style>
+    :root{
+      --bg1:#fbf6ea;
+      --bg2:#efe5cf;
+      --ink:#1f1f1f;
+      --muted:#6b6b6b;
+      --line:#e2d2b7;
+      --card2:#ffffff;
+      --ok:#1f9d61;
+      --bad:#d74b4b;
+      --accent:#2f6fed;
+      --gold:#b88b2a;
+      --shadow: 0 18px 38px rgba(0,0,0,.12);
+      --shadow2: 0 10px 22px rgba(0,0,0,.10);
+      --radius: 16px;
+      --big: clamp(18px, 2.2vw, 24px);
+      --mid: clamp(14px, 1.7vw, 18px);
+      --sm:  clamp(12px, 1.3vw, 14px);
+    }
+
+    *{ box-sizing:border-box; }
+    html, body{ height:100%; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "PingFang SC","Microsoft YaHei", Arial;
+      color:var(--ink);
+      background:
+        radial-gradient(1100px 560px at 14% 6%, #fff2d2, transparent 60%),
+        radial-gradient(1000px 540px at 86% 18%, #e8f4ff, transparent 58%),
+        linear-gradient(180deg, var(--bg1), var(--bg2));
+      overflow-x:hidden;
+    }
+
+    .wrap{
+      max-width:1200px;
+      margin:0 auto;
+      padding:18px 14px 28px;
+    }
+
+    header{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-bottom:12px;
+    }
+
+    .brand{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+
+    .title{
+      margin:0;
+      font-size: clamp(22px, 2.6vw, 30px);
+      font-weight: 1000;
+      letter-spacing:.4px;
+    }
+    .subtitle{
+      margin:0;
+      color:var(--muted);
+      font-size: var(--sm);
+      line-height:1.4;
+    }
+
+    .panel{
+      position:relative;
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      padding:14px;
+      background: rgba(255,255,255,.58);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+
+    .inkwash{
+      position:absolute;
+      inset:-140px;
+      background:
+        radial-gradient(320px 180px at 18% 28%, rgba(34,90,80,.09), transparent 62%),
+        radial-gradient(340px 200px at 78% 62%, rgba(200,80,40,.09), transparent 62%),
+        radial-gradient(300px 180px at 55% 12%, rgba(47,111,237,.07), transparent 62%),
+        radial-gradient(360px 220px at 40% 82%, rgba(184,139,42,.07), transparent 62%);
+      transform: rotate(-6deg);
+      pointer-events:none;
+      filter: blur(.2px);
+    }
+
+    .topbar{
+      position:relative;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:12px;
+    }
+
+    .chips{
+      display:flex;
+      gap:8px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 10px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      background: rgba(255,255,255,.78);
+      font-size: var(--sm);
+      color:var(--muted);
+    }
+    .chip b{ color:var(--ink); }
+
+    .actions{
+      display:flex;
+      gap:8px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+
+    button{
+      border:none;
+      border-radius:12px;
+      padding:10px 12px;
+      cursor:pointer;
+      font-weight: 900;
+      letter-spacing:.2px;
+      box-shadow: var(--shadow2);
+      font-size: var(--sm);
+      user-select:none;
+    }
+    button:active{ transform: translateY(1px); }
+
+    .btn-primary{ background: var(--accent); color:#fff; }
+    .btn-secondary{ background: rgba(255,255,255,.92); border:1px solid var(--line); color: var(--ink); box-shadow:none; }
+    .btn-ghost{ background: transparent; border:1px dashed var(--line); color: var(--muted); box-shadow:none; }
+
+    .stepper{
+      position:relative;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin-bottom:12px;
+    }
+    .step{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      padding:10px 12px;
+      border:1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255,255,255,.72);
+      font-size: var(--sm);
+      color:var(--muted);
+      white-space:nowrap;
+    }
+    .dot{
+      width:10px;height:10px;border-radius:999px;
+      background: #c7c7c7;
+    }
+    .step.active{
+      color:var(--ink);
+      border-color: rgba(47,111,237,.45);
+      box-shadow: 0 0 0 3px rgba(47,111,237,.14);
+    }
+    .step.active .dot{ background: var(--accent); }
+    .step.done .dot{ background: var(--ok); }
+
+    .content{
+      position:relative;
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:12px;
+    }
+
+    .cardbox{
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.54);
+      padding:12px;
+    }
+
+    .boxTitle{
+      margin:0 0 8px;
+      font-weight:1000;
+      font-size: var(--mid);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .boxHint{
+      margin:0 0 10px;
+      color:var(--muted);
+      font-size: var(--sm);
+      line-height:1.5;
+    }
+
+    .grid2{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+    }
+    @media (max-width: 820px){
+      .grid2{ grid-template-columns: 1fr; }
+    }
+
+    .cards{
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap:10px;
+    }
+    @media (max-width: 560px){
+      .cards{ grid-template-columns:1fr; }
+    }
+
+    .card{
+      user-select:none;
+      background: var(--card2);
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:14px 12px;
+      min-height:72px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      cursor:pointer;
+      box-shadow: 0 12px 20px rgba(0,0,0,.09);
+      transition: transform .08s ease, box-shadow .12s ease, border-color .12s ease, opacity .12s ease;
+      position:relative;
+      overflow:hidden;
+    }
+    .card::before{
+      content:"";
+      position:absolute; inset:0;
+      background: linear-gradient(120deg, rgba(255,255,255,.0), rgba(255,255,255,.50), rgba(255,255,255,.0));
+      transform: translateX(-120%);
+      transition: transform .55s ease;
+      pointer-events:none;
+    }
+    .card:hover{ transform: translateY(-1px); box-shadow: 0 16px 28px rgba(0,0,0,.12); }
+    .card:hover::before{ transform: translateX(120%); }
+    .card.selected{
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(47,111,237,.18), 0 16px 28px rgba(0,0,0,.12);
+    }
+    .card.done{
+      opacity:.28;
+      cursor:default;
+      filter: grayscale(.25);
+      transform:none !important;
+      box-shadow:none !important;
+    }
+    .bigText{ font-weight:1000; font-size: var(--mid); }
+    .midText{ font-size: var(--mid); line-height:1.5; }
+    .smText{ font-size: var(--sm); color: var(--muted); line-height:1.5; }
+
+    .footerbar{
+      border:1px dashed var(--line);
+      border-radius: var(--radius);
+      padding:10px 12px;
+      background: rgba(255,255,255,.65);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .msg{
+      font-size: var(--sm);
+      color: var(--muted);
+      flex: 1;
+      min-width: 240px;
+      line-height:1.45;
+    }
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:6px 10px;
+      border-radius:999px;
+      font-size: var(--sm);
+      font-weight:1000;
+      color:#fff;
+      display:none;
+      white-space:nowrap;
+    }
+    .badge.ok{ background: var(--ok); }
+    .badge.bad{ background: var(--bad); }
+    .badge.show{ display:inline-flex; }
+
+    .overlay{
+      position:fixed;
+      inset:0;
+      background: rgba(0,0,0,.35);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+      z-index: 50;
+    }
+    .modal{
+      width:min(820px, 96vw);
+      background: rgba(255,255,255,.94);
+      border:1px solid var(--line);
+      border-radius:18px;
+      box-shadow: var(--shadow);
+      padding:16px;
+      position:relative;
+      overflow:hidden;
+    }
+    .modal h2{
+      margin:0 0 8px;
+      font-size: clamp(18px, 2.1vw, 22px);
+      font-weight: 1100;
+    }
+    .modal p{
+      margin:0 0 10px;
+      color:var(--muted);
+      font-size: var(--sm);
+      line-height:1.6;
+    }
+    .goal{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.75);
+      border-radius:14px;
+      padding:10px 12px;
+      margin:10px 0 12px;
+      font-size: var(--sm);
+      line-height:1.6;
+    }
+    .goal b{ color: var(--gold); }
+    .row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+      margin-top:10px;
+    }
+
+    .confetti{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:60;
+      display:none;
+    }
+    .confetti.show{ display:block; }
+
+    .note{
+      font-size: var(--sm);
+      color: var(--muted);
+      margin-top:10px;
+      text-align:right;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <h1 class="title">《忆江南》课堂闯关</h1>
+        <p class="subtitle">意境导入 → 重点句理解 → 诗意配对 → 情感回扣</p>
+      </div>
+    </header>
+
+    <div class="panel">
+      <div class="inkwash"></div>
+
+      <div class="topbar">
+        <div class="chips">
+          <div class="chip">关卡：<b id="stageName">一</b></div>
+          <div class="chip">进度：<b id="progress">0/0</b></div>
+          <div class="chip">得分：<b id="score">0</b></div>
+          <div class="chip">连对：<b id="streak">0</b></div>
+          <div class="chip">用时：<b id="time">00:00</b></div>
+        </div>
+        <div class="actions">
+          <button class="btn-secondary" id="btnFullscreen">全屏</button>
+          <button class="btn-secondary" id="btnOpenPoem">古诗欣赏</button>
+          <button class="btn-secondary" id="btnReset">重来</button>
+          <button class="btn-primary" id="btnHint">提示</button>
+        </div>
+      </div>
+
+      <div class="stepper">
+        <div class="step active" id="step1"><span class="dot"></span>关卡一：意境导入</div>
+        <div class="step" id="step2"><span class="dot"></span>关卡二：重点句理解</div>
+        <div class="step" id="step3"><span class="dot"></span>关卡三：诗意配对</div>
+        <div class="step" id="step4"><span class="dot"></span>通关回扣</div>
+      </div>
+
+      <div class="content" id="content"></div>
+
+      <div class="footerbar">
+        <div class="msg" id="msg">准备开始：点击“开始闯关”。</div>
+        <div class="badge ok" id="badgeOk">正确</div>
+        <div class="badge bad" id="badgeBad">再想想</div>
+      </div>
+
+      <div class="note">建议课堂投屏：点右上角“全屏”</div>
+    </div>
+  </div>
+
+  <div class="overlay" id="overlay">
+    <div class="modal">
+      <div class="inkwash"></div>
+      <h2>上课任务：读懂《忆江南》的诗意与情感</h2>
+      <p>我们用“闯关”的方式，边理解、边练习、边回扣情感。</p>
+      <div class="goal">
+        <b>学习目标：</b>能说出“日出江花红胜火”“春来江水绿如蓝”的意思，并理解“能不忆江南”的感情。
+      </div>
+      <p><b>玩法：</b>每关完成会自动进入下一关；提示只给方向，不直接给答案。</p>
+      <div class="row">
+        <button class="btn-ghost" id="btnSkip">直接开始</button>
+        <button class="btn-primary" id="btnStart">开始闯关</button>
+      </div>
+    </div>
+  </div>
+
+  <canvas class="confetti" id="confetti"></canvas>
+
+  <script>
+    // 数据
+    const MCQ = [
+      { id: 1, q: "“日出江花红胜火”描写的画面是？",
+        options: ["太阳升起，江边花朵红得像火一样","夜晚月光照在江面上","下雪时江边一片白"],
+        answer: 0, tip: "抓关键词：日出、江花、红。" },
+      { id: 2, q: "“春来江水绿如蓝”中“绿如蓝”想表达江水怎样？",
+        options: ["江水浑浊发黄","江水碧绿清澈、很美","江水结冰发白"],
+        answer: 1, tip: "抓关键词：春来、江水、绿。" },
+      { id: 3, q: "“能不忆江南？”表达了诗人怎样的心情？",
+        options: ["讨厌江南","怀念江南、舍不得","害怕江南"],
+        answer: 1, tip: "抓关键词：忆（想念、回想）。" }
+    ];
+
+    const PAIRS = [
+      { id: 1, poem: "江南好", meaning: "江南的景色真美呀", key:"美" },
+      { id: 2, poem: "风景旧曾谙", meaning: "这里的风景我以前很熟悉", key:"熟悉" },
+      { id: 3, poem: "日出江花红胜火", meaning: "太阳升起时，江边花朵红得像火一样", key:"日出/红" },
+      { id: 4, poem: "春来江水绿如蓝", meaning: "春天江水碧绿清澈，美得像蓝宝石一样", key:"春来/绿" },
+      { id: 5, poem: "能不忆江南？", meaning: "怎么能不怀念江南呢？", key:"怀念" },
+      { id: 6, poem: "忆", meaning: "“忆”就是回想、想念", key:"想念" }
+    ];
+
+    function shuffle(arr){
+      const a = arr.slice();
+      for(let i=a.length-1;i>0;i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+    const pad2 = (n)=> String(n).padStart(2,"0");
+    const escapeHtml = (s)=> String(s)
+      .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;").replaceAll("'","&#039;");
+
+    // DOM
+    const contentEl = document.getElementById("content");
+    const overlayEl = document.getElementById("overlay");
+
+    const stageNameEl = document.getElementById("stageName");
+    const progressEl = document.getElementById("progress");
+    const scoreEl = document.getElementById("score");
+    const streakEl = document.getElementById("streak");
+    const timeEl = document.getElementById("time");
+    const msgEl = document.getElementById("msg");
+    const badgeOk = document.getElementById("badgeOk");
+    const badgeBad = document.getElementById("badgeBad");
+
+    const step1 = document.getElementById("step1");
+    const step2 = document.getElementById("step2");
+    const step3 = document.getElementById("step3");
+    const step4 = document.getElementById("step4");
+
+    const btnStart = document.getElementById("btnStart");
+    const btnSkip = document.getElementById("btnSkip");
+    const btnReset = document.getElementById("btnReset");
+    const btnHint = document.getElementById("btnHint");
+    const btnFullscreen = document.getElementById("btnFullscreen");
+    const btnOpenPoem = document.getElementById("btnOpenPoem");
+
+    // Confetti
+    const canvas = document.getElementById("confetti");
+    const ctx = canvas.getContext("2d");
+
+    // State
+    let stage = 1;
+    let score = 0;
+    let streak = 0;
+
+    // timer
+    let t0 = null;
+    let timer = null;
+
+    // stage2
+    let mcqOrder = [];
+    let mcqIndex = 0;
+
+    // stage3
+    let poemOrder = [];
+    let meaningOrder = [];
+    let selectedPoemId = null;
+    let selectedMeaningId = null;
+    let done = new Set();
+
+    // hint count
+    let hintUsed = 0;
+
+    function setMessage(text, type=null){
+      msgEl.textContent = text;
+      badgeOk.classList.remove("show");
+      badgeBad.classList.remove("show");
+      if(type==="ok") badgeOk.classList.add("show");
+      if(type==="bad") badgeBad.classList.add("show");
+    }
+
+    function setSteps(){
+      [step1,step2,step3,step4].forEach(s=>{ s.classList.remove("active"); s.classList.remove("done"); });
+      if(stage===1){ step1.classList.add("active"); }
+      else if(stage===2){ step1.classList.add("done"); step2.classList.add("active"); }
+      else if(stage===3){ step1.classList.add("done"); step2.classList.add("done"); step3.classList.add("active"); }
+      else { step1.classList.add("done"); step2.classList.add("done"); step3.classList.add("done"); step4.classList.add("active"); }
+    }
+
+    function updateHeaderProgress(current, total){
+      progressEl.textContent = `${current}/${total}`;
+      scoreEl.textContent = String(score);
+      streakEl.textContent = String(streak);
+      stageNameEl.textContent = stage===1 ? "一" : stage===2 ? "二" : stage===3 ? "三" : "完成";
+    }
+
+    function startTimer(){
+      t0 = Date.now();
+      if(timer) clearInterval(timer);
+      timer = setInterval(()=>{
+        const s = Math.floor((Date.now()-t0)/1000);
+        timeEl.textContent = `${pad2(Math.floor(s/60))}:${pad2(s%60)}`;
+      }, 250);
+    }
+
+    // Stage 1
+    function renderStage1(){
+      setSteps();
+      contentEl.innerHTML = `
+        <div class="cardbox">
+          <div class="boxTitle">关卡一：意境导入 <span class="smText">（先“看见画面”，再“读懂文字”）</span></div>
+          <p class="boxHint">
+            想一想：江南的春天可能有什么？（小桥、流水、柳树、红花、碧绿的江水……）
+            <br/>注意两句重点描写：<b>“日出江花红胜火”</b>、<b>“春来江水绿如蓝”</b>。
+          </p>
+          <div class="footerbar" style="margin-top:10px;">
+            <div class="msg">
+              课堂任务：请用一句话说说你心中的“江南春天”。
+              <br/><span class="smText">示例：我觉得江南有小桥流水、柳树和花，特别美。</span>
+            </div>
+            <button class="btn-primary" id="btnNext1">进入关卡二</button>
+          </div>
+        </div>
+      `;
+      updateHeaderProgress(0,0);
+      setMessage("关卡一：先想象“江南春天”的画面，再进入理解题。");
+      document.getElementById("btnNext1").addEventListener("click", ()=>{ stage=2; render(); });
+    }
+
+    // Stage 2
+    function renderStage2(){
+      setSteps();
+      if(mcqOrder.length===0){ mcqOrder = shuffle(MCQ); mcqIndex=0; }
+      const item = mcqOrder[mcqIndex];
+
+      contentEl.innerHTML = `
+        <div class="cardbox">
+          <div class="boxTitle">关卡二：重点句理解 <span class="smText">（共 ${MCQ.length} 题）</span></div>
+          <p class="boxHint">选择最正确的一项。答对加分，答错不扣分，但连对会被打断。</p>
+
+          <div class="cardbox" style="background: rgba(255,255,255,.70); border-radius:14px;">
+            <div class="boxTitle" style="margin-bottom:6px;">题目 ${mcqIndex+1}：${escapeHtml(item.q)}</div>
+            <div class="cards" id="mcqCards"></div>
+          </div>
+
+          <div class="footerbar" style="margin-top:12px;">
+            <div class="msg">小提示：先读诗句关键词，再联想画面。</div>
+            <button class="btn-secondary" id="btnSkip2">跳过本题</button>
+          </div>
+        </div>
+      `;
+
+      const mcqCards = document.getElementById("mcqCards");
+      item.options.forEach((opt, idx)=>{
+        const div = document.createElement("div");
+        div.className = "card";
+        div.innerHTML = `<div class="midText">${escapeHtml(opt)}</div>`;
+        div.addEventListener("click", ()=>{
+          if(idx===item.answer){
+            const bonus = Math.min(5, streak);
+            const add = 10 + bonus;
+            score += add; streak += 1;
+            setMessage(`答对了！+${add}分（连对：${streak}）`, "ok");
+          } else {
+            streak = 0;
+            setMessage("这题不对哦，再想想诗句画面～", "bad");
+          }
+          updateHeaderProgress(mcqIndex+1, MCQ.length);
+          setTimeout(()=>{
+            mcqIndex += 1;
+            if(mcqIndex >= mcqOrder.length) stage = 3;
+            render();
+          }, 500);
+        });
+        mcqCards.appendChild(div);
+      });
+
+      document.getElementById("btnSkip2").addEventListener("click", ()=>{
+        streak = 0;
+        setMessage("已跳过。本关继续下一题。", null);
+        mcqIndex += 1;
+        if(mcqIndex >= mcqOrder.length) stage = 3;
+        render();
+      });
+
+      updateHeaderProgress(mcqIndex, MCQ.length);
+      setMessage("关卡二：选出最符合诗句意思的答案。");
+    }
+
+    // Stage 3
+    function renderStage3(){
+      setSteps();
+      if(poemOrder.length===0 || meaningOrder.length===0){
+        poemOrder = shuffle(PAIRS.map(x=>({id:x.id, text:x.poem})));
+        meaningOrder = shuffle(PAIRS.map(x=>({id:x.id, text:x.meaning})));
+        selectedPoemId=null; selectedMeaningId=null; done=new Set();
+      }
+
+      contentEl.innerHTML = `
+        <div class="cardbox">
+          <div class="boxTitle">关卡三：诗意配对 <span class="smText">（先诗句，后解释）</span></div>
+          <p class="boxHint">先点“诗句卡”，再点对应“解释卡”。配对正确得分，全部完成即可通关。</p>
+
+          <div class="grid2">
+            <div class="cardbox">
+              <div class="boxTitle">诗句卡片 <span class="smText">（先选）</span></div>
+              <p class="boxHint">抓关键词：日出、江花、红、春来、江水、绿、忆……</p>
+              <div class="cards" id="poemCards"></div>
+            </div>
+
+            <div class="cardbox">
+              <div class="boxTitle">解释卡片 <span class="smText">（后选）</span></div>
+              <p class="boxHint">把诗句想成画面：你“看到了什么”？</p>
+              <div class="cards" id="meaningCards"></div>
+            </div>
+          </div>
+        </div>
+      `;
+
+      const poemCardsEl = document.getElementById("poemCards");
+      const meaningCardsEl = document.getElementById("meaningCards");
+
+      poemOrder.forEach(item=>{
+        const div = document.createElement("div");
+        div.className="card";
+        div.innerHTML = `<div class="bigText">${escapeHtml(item.text)}</div>`;
+        if(done.has(item.id)) div.classList.add("done");
+        else if(selectedPoemId===item.id) div.classList.add("selected");
+        div.addEventListener("click", ()=>{
+          if(done.has(item.id)) return;
+          selectedPoemId = (selectedPoemId===item.id) ? null : item.id;
+          setMessage(selectedPoemId ? "已选择诗句卡，请选择对应解释卡。" : "已取消选择，请重新选择诗句卡。");
+          renderStage3();
+          tryMatch();
+        });
+        poemCardsEl.appendChild(div);
+      });
+
+      meaningOrder.forEach(item=>{
+        const div = document.createElement("div");
+        div.className="card";
+        div.innerHTML = `<div class="midText">${escapeHtml(item.text)}</div>`;
+        if(done.has(item.id)) div.classList.add("done");
+        else if(selectedMeaningId===item.id) div.classList.add("selected");
+        div.addEventListener("click", ()=>{
+          if(done.has(item.id)) return;
+          selectedMeaningId = (selectedMeaningId===item.id) ? null : item.id;
+          setMessage(selectedMeaningId ? "已选择解释卡，正在核对…" : "已取消选择，请重新选择解释卡。");
+          renderStage3();
+          tryMatch();
+        });
+        meaningCardsEl.appendChild(div);
+      });
+
+      updateHeaderProgress(done.size, PAIRS.length);
+      if(done.size===0) setMessage("关卡三：先选一张诗句卡。");
+    }
+
+    function tryMatch(){
+      if(!selectedPoemId || !selectedMeaningId) return;
+
+      if(selectedPoemId === selectedMeaningId){
+        done.add(selectedPoemId);
+        const bonus = Math.min(6, streak);
+        const add = 10 + bonus;
+        score += add; streak += 1;
+
+        setMessage(`配对正确！+${add}分（连对：${streak}）`, "ok");
+        selectedPoemId=null; selectedMeaningId=null;
+
+        updateHeaderProgress(done.size, PAIRS.length);
+
+        if(done.size === PAIRS.length){
+          score += 20;
+          setTimeout(()=>{ stage=4; render(); }, 350);
+        }
+      } else {
+        score = Math.max(0, score-2);
+        streak = 0;
+        setMessage("不匹配哦，再想想～（提示：抓关键词，联想画面）", "bad");
+        const keepP = selectedPoemId, keepM = selectedMeaningId;
+        setTimeout(()=>{
+          if(selectedPoemId===keepP) selectedPoemId=null;
+          if(selectedMeaningId===keepM) selectedMeaningId=null;
+          renderStage3();
+        }, 450);
+      }
+      scoreEl.textContent = String(score);
+      streakEl.textContent = String(streak);
+    }
+
+    // Stage 4
+    function renderStage4(){
+      setSteps();
+      updateHeaderProgress(1,1);
+
+      const timeUsed = timeEl.textContent;
+      contentEl.innerHTML = `
+        <div class="cardbox">
+          <div class="boxTitle">通关回扣：用一句话说出你读到的情感</div>
+          <p class="boxHint">
+            重点回扣两句：<b>“日出江花红胜火，春来江水绿如蓝。”</b><br/>
+            再回扣一句：<b>“能不忆江南？”</b>——表达对江南的<b>赞美</b>与<b>怀念</b>。
+          </p>
+
+          <div class="cardbox" style="background: rgba(255,255,255,.72); border-radius:14px;">
+            <div class="boxTitle" style="margin-bottom:6px;">课堂提问</div>
+            <div class="smText">请用一句话回答：<b>“诗人为什么会怀念江南？”</b></div>
+            <div style="margin-top:10px; display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+              <input id="studentAnswer" placeholder="（可选）输入一个示例答案，便于截图展示" style="
+                flex:1; min-width:260px; padding:12px 12px; border-radius:12px;
+                border:1px solid var(--line); background: rgba(255,255,255,.9);
+                font-size: var(--sm);
+              "/>
+              <button class="btn-primary" id="btnMakeSummary">生成课堂总结</button>
+            </div>
+            <div id="summaryBox" class="goal" style="display:none; margin-top:10px;"></div>
+          </div>
+
+          <div class="footerbar" style="margin-top:12px;">
+            <div class="msg">
+              <b>成绩单：</b>得分 <b>${score}</b> 分 ｜ 用时 <b>${timeUsed}</b> ｜ 提示次数 <b>${hintUsed}</b>
+              <br/><span class="smText">建议截图此页作为“成果证明”。</span>
+            </div>
+            <button class="btn-secondary" id="btnReplay">再来一次</button>
+          </div>
+        </div>
+      `;
+
+      setMessage("通关完成！回扣一句：能不忆江南？", "ok");
+      fireConfetti();
+
+      document.getElementById("btnReplay").addEventListener("click", ()=> resetAll());
+      document.getElementById("btnMakeSummary").addEventListener("click", ()=>{
+        const val = (document.getElementById("studentAnswer").value || "").trim();
+        const example = val || "我觉得诗人怀念江南，因为那里风景美，又让他想起熟悉温暖的回忆。";
+        const box = document.getElementById("summaryBox");
+        box.style.display = "block";
+        box.innerHTML = `
+          <b>课堂总结（可直接念）：</b><br/>
+          “日出江花红胜火”写出了花的鲜红；<br/>
+          “春来江水绿如蓝”写出了水的碧绿清澈。<br/>
+          所以诗人感叹“能不忆江南？”——表达对江南的赞美和怀念。<br/><br/>
+          <b>学生示例答案：</b>${escapeHtml(example)}
+        `;
+      });
+    }
+
+    // Hint
+    function doHint(){
+      hintUsed += 1;
+      score = Math.max(0, score-1);
+      scoreEl.textContent = String(score);
+
+      if(stage===2){
+        const item = mcqOrder[mcqIndex];
+        setMessage(`提示：${item.tip}`, null);
+        return;
+      }
+      if(stage===3){
+        const remaining = PAIRS.filter(p=>!done.has(p.id));
+        if(remaining.length===0){ setMessage("你已经全部完成啦！", "ok"); return; }
+        const p = remaining[Math.floor(Math.random()*remaining.length)];
+        setMessage(`提示：想想“${p.poem}”这句的关键词是【${p.key}】。`, null);
+        return;
+      }
+      setMessage("提示：先抓关键词，再联想画面。", null);
+    }
+
+    // Confetti
+    let confettiOn=false;
+    let pieces=[];
+    function resizeCanvas(){ canvas.width=window.innerWidth; canvas.height=window.innerHeight; }
+    window.addEventListener("resize", resizeCanvas);
+
+    function spawnConfetti(){
+      resizeCanvas();
+      pieces=[];
+      const n=160;
+      for(let i=0;i<n;i++){
+        pieces.push({
+          x:Math.random()*canvas.width,
+          y:-20-Math.random()*canvas.height*0.2,
+          r:3+Math.random()*6,
+          vy:1.8+Math.random()*3.6,
+          vx:-1.4+Math.random()*2.8,
+          a:Math.random()*Math.PI*2,
+          va:-0.12+Math.random()*0.24,
+          c:`hsla(${Math.floor(Math.random()*360)},85%,60%,0.86)`
+        });
+      }
+    }
+    function drawConfetti(){
+      if(!confettiOn) return;
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      for(const p of pieces){
+        p.x+=p.vx; p.y+=p.vy; p.a+=p.va;
+        if(p.y>canvas.height+30){ p.y=-20; p.x=Math.random()*canvas.width; }
+        ctx.save();
+        ctx.translate(p.x,p.y);
+        ctx.rotate(p.a);
+        ctx.fillStyle=p.c;
+        ctx.fillRect(-p.r,-p.r,p.r*2.2,p.r*1.4);
+        ctx.restore();
+      }
+      requestAnimationFrame(drawConfetti);
+    }
+    function fireConfetti(){
+      confettiOn=true;
+      canvas.classList.add("show");
+      spawnConfetti();
+      requestAnimationFrame(drawConfetti);
+      setTimeout(()=>{
+        confettiOn=false;
+        canvas.classList.remove("show");
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+      }, 2200);
+    }
+
+    // Render
+    function render(){
+      setSteps();
+      if(stage===1) renderStage1();
+      else if(stage===2) renderStage2();
+      else if(stage===3) renderStage3();
+      else renderStage4();
+    }
+
+    function resetAll(){
+      stage=1; score=0; streak=0;
+      mcqOrder=[]; mcqIndex=0;
+      poemOrder=[]; meaningOrder=[];
+      selectedPoemId=null; selectedMeaningId=null;
+      done=new Set();
+      hintUsed=0;
+      scoreEl.textContent="0";
+      streakEl.textContent="0";
+      progressEl.textContent="0/0";
+      stageNameEl.textContent="一";
+      setMessage("准备开始：先完成意境导入。");
+      render();
+    }
+
+    function startGame(){
+      overlayEl.style.display="none";
+      resetAll();
+      startTimer();
+    }
+
+    // Buttons
+    btnStart.addEventListener("click", startGame);
+    btnSkip.addEventListener("click", startGame);
+
+    btnReset.addEventListener("click", ()=> resetAll());
+    btnHint.addEventListener("click", doHint);
+
+    btnFullscreen.addEventListener("click", async ()=>{
+      try{
+        if(!document.fullscreenElement) await document.documentElement.requestFullscreen();
+        else await document.exitFullscreen();
+      }catch(e){
+        alert("当前浏览器不支持全屏，或被系统限制。");
+      }
+    });
+
+    // ✅ 原文联动：跳转 poem.html，并携带返回地址
+    btnOpenPoem.addEventListener("click", ()=>{
+      window.location.href = "poem.html?back=game.html";
+    });
+
+    // init
+    setMessage("准备开始：点击“开始闯关”。");
+    setSteps();
+  </script>
+</body>
+</html>

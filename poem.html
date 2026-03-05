@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>忆江南</title>
+<style>
+  :root{
+    --bg1:#eef6fb;
+    --bg2:#fdf8ef;
+    --ink:#1f1f1f;
+    --muted:#6b6b6b;
+    --line:#e2d2b7;
+    --accent:#2f6fed;
+    --shadow: 0 18px 38px rgba(0,0,0,.12);
+    --radius: 16px;
+  }
+  *{ box-sizing:border-box; }
+  body{
+    margin:0;
+    min-height:100vh;
+    font-family: ui-sans-serif, system-ui, -apple-system, "PingFang SC","Microsoft YaHei", Arial;
+    color:var(--ink);
+    background:
+      radial-gradient(1000px 520px at 20% 10%, #fff2d2, transparent 60%),
+      radial-gradient(900px 520px at 85% 20%, #e8f4ff, transparent 58%),
+      linear-gradient(180deg, var(--bg1), var(--bg2));
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:18px;
+  }
+  .card{
+    width:min(980px, 96vw);
+    background: rgba(255,255,255,.88);
+    border:1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding:22px 18px;
+    position:relative;
+    overflow:hidden;
+  }
+  .inkwash{
+    position:absolute;
+    inset:-140px;
+    background:
+      radial-gradient(320px 180px at 18% 28%, rgba(34,90,80,.09), transparent 62%),
+      radial-gradient(340px 200px at 78% 62%, rgba(200,80,40,.09), transparent 62%),
+      radial-gradient(300px 180px at 55% 12%, rgba(47,111,237,.07), transparent 62%),
+      radial-gradient(360px 220px at 40% 82%, rgba(184,139,42,.07), transparent 62%);
+    transform: rotate(-6deg);
+    pointer-events:none;
+    filter: blur(.2px);
+  }
+  header{
+    position:relative;
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:12px;
+    flex-wrap:wrap;
+    padding:4px 4px 14px;
+    border-bottom:1px dashed var(--line);
+    margin-bottom:14px;
+  }
+  .title{
+    margin:0;
+    font-size: clamp(26px, 3vw, 38px);
+    font-weight: 1000;
+    letter-spacing:.6px;
+  }
+  .meta{
+    margin:0;
+    color:var(--muted);
+    font-size: 14px;
+  }
+  .layout{
+    position:relative;
+    display:grid;
+    grid-template-columns: 1.05fr .95fr;
+    gap:14px;
+    align-items:start;
+  }
+  @media (max-width: 860px){
+    .layout{ grid-template-columns:1fr; }
+  }
+  .poemBox{
+    border:1px solid var(--line);
+    border-radius:14px;
+    background: rgba(255,255,255,.74);
+    padding:14px 12px;
+  }
+  .poem{
+    font-size: clamp(18px, 2.2vw, 26px);
+    line-height: 2.15;
+    letter-spacing: 2px;
+    text-align:center;
+    font-weight: 1000;
+  }
+  .meaningBox{
+    border:1px solid var(--line);
+    border-radius:14px;
+    background: rgba(255,255,255,.74);
+    padding:14px 12px;
+  }
+  .h{
+    margin:0 0 8px;
+    font-size: 16px;
+    font-weight: 1000;
+  }
+  .meaning{
+    margin:0;
+    color: #333;
+    font-size: 14px;
+    line-height: 1.85;
+  }
+  .tags{
+    margin-top:10px;
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    justify-content:center;
+  }
+  .tag{
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:6px 10px;
+    font-size:12px;
+    color: var(--muted);
+    background: rgba(255,255,255,.78);
+  }
+  .actions{
+    position:relative;
+    display:flex;
+    gap:10px;
+    justify-content:flex-end;
+    flex-wrap:wrap;
+    margin-top:14px;
+    padding-top:12px;
+    border-top:1px dashed var(--line);
+  }
+  button{
+    border:none;
+    border-radius:12px;
+    padding:10px 12px;
+    cursor:pointer;
+    font-weight: 900;
+    letter-spacing:.2px;
+    font-size: 14px;
+  }
+  .btn-primary{ background: var(--accent); color:#fff; }
+  .btn-secondary{ background: rgba(255,255,255,.92); border:1px solid var(--line); color: var(--ink); }
+
+  .readTip{
+    margin-top:10px;
+    font-size:12px;
+    color:var(--muted);
+    text-align:right;
+  }
+</style>
+</head>
+<body>
+  <main class="card">
+    <div class="inkwash"></div>
+
+    <header>
+      <div>
+        <h1 class="title">忆江南</h1>
+        <p class="meta">唐 · 白居易</p>
+      </div>
+      <div class="meta">古诗欣赏</div>
+    </header>
+
+    <section class="layout">
+      <div class="poemBox">
+        <div class="poem" id="poemText">
+          江南好，风景旧曾谙。<br/>
+          日出江花红胜火，春来江水绿如蓝。<br/>
+          能不忆江南？
+        </div>
+        <div class="tags">
+          <span class="tag">意境：江南春景</span>
+          <span class="tag">描写：花红 · 水绿</span>
+          <span class="tag">情感：赞美 · 怀念</span>
+        </div>
+      </div>
+
+      <div class="meaningBox">
+        <h3 class="h">诗意理解</h3>
+        <p class="meaning">
+          这首词用两幅画面写江南春天：<br/>
+          “日出江花红胜火”写出花的鲜红像火一样；<br/>
+          “春来江水绿如蓝”写出江水碧绿清澈。<br/><br/>
+          诗人因此感叹“能不忆江南？”表达对江南风景的赞美与怀念。
+        </p>
+
+        <h3 class="h" style="margin-top:12px;">课堂思考</h3>
+        <p class="meaning">如果你看到这样的景色，你会用什么词来形容它？</p>
+
+        <div class="readTip">建议：先朗读，再回到闯关巩固。</div>
+      </div>
+    </section>
+
+    <div class="actions">
+      <button class="btn-secondary" onclick="window.history.back()">浏览器返回</button>
+      <button class="btn-secondary" id="btnSpeak">朗读古诗</button>
+      <button class="btn-secondary" id="btnStop">停止朗读</button>
+      <button class="btn-primary" id="btnBack">返回课堂闯关</button>
+    </div>
+  </main>
+
+<script>
+  // 返回地址
+  const params = new URLSearchParams(location.search);
+  const back = params.get("back") || "game.html";
+
+  // 朗读
+  const poemPlain = "江南好，风景旧曾谙。日出江花红胜火，春来江水绿如蓝。能不忆江南？";
+  let currentUtter = null;
+
+  function speak(){
+    try{
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(poemPlain);
+      u.lang = "zh-CN";
+      u.rate = 0.9;
+      u.pitch = 1.0;
+      currentUtter = u;
+      window.speechSynthesis.speak(u);
+    }catch(e){
+      alert("当前浏览器不支持朗读功能。");
+    }
+  }
+  function stop(){
+    try{ window.speechSynthesis.cancel(); }catch(e){}
+  }
+
+  document.getElementById("btnSpeak").addEventListener("click", speak);
+  document.getElementById("btnStop").addEventListener("click", stop);
+
+  document.getElementById("btnBack").addEventListener("click", ()=>{
+    stop();
+    window.location.href = back;
+  });
+
+  // 离开页面前停止朗读
+  window.addEventListener("beforeunload", stop);
+</script>
+</body>
+</html>
